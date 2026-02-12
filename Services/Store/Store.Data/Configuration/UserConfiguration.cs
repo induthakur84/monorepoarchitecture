@@ -9,6 +9,8 @@ namespace Store.Data.Configuration
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.Property(builder => builder.Name).IsRequired();
+            builder.HasIndex(builder=>builder.Name).IsUnique();
+            
 
         }
     }

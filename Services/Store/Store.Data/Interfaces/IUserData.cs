@@ -1,4 +1,5 @@
 ﻿using ApiUtility.ActionFilters;
+using SharedModel;
 using Store.Domain.DTO.Request;
 using Store.Domain.DTO.Response;
 
@@ -11,7 +12,7 @@ namespace Store.Data.Interfaces
 
             Task<UserResponse> GetByIdAsync(int id);
     
-            Task<IEnumerable<UserResponse>> GetAllAsync();
+            Task<PagedResults<UserResponse>> GetAllAsync();
     
             Task<UserResponse> UpdateAsync(int id, UserRequest request);
     
