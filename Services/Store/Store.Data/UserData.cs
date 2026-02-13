@@ -13,6 +13,11 @@ namespace Store.Data
     {
         public readonly StoreDbContext _context;
         public readonly IMapper _mapper;
+        public UserData(StoreDbContext context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
         public async Task<UserResponse> CreateAsync(UserRequest request)
         {
             var user = _mapper.Map<User>(request);

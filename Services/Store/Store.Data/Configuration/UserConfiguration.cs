@@ -10,8 +10,6 @@ namespace Store.Data.Configuration
         {
             builder.Property(builder => builder.Name).IsRequired();
             builder.HasIndex(builder=>builder.Name).IsUnique();
-            
-
         }
     }
 }

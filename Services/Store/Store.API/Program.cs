@@ -1,4 +1,5 @@
 using ApiUtility.ActionFilters;
+using ApiUtility.Middleware;
 using Extensions;
 using Microsoft.EntityFrameworkCore;
 using Store.Data;
@@ -19,7 +20,11 @@ builder.Services.AddDbContext<StoreDbContext>(options =>
 
 builder.Services.AddScoped(typeof(ResponseFilterAttribute<>));
 
+
+
 // Register IUserData and its implementation UserData
+
+//1000
 builder.Services.RegisterServices(typeof(UserData).Assembly.FullName);
 
 
@@ -32,7 +37,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 var app = builder.Build();
+
+
+//Global Exception Handling Middleware
+app.UseMiddleware<ExceptionMiddleware>();
 
 
 var deployDatabaseChanges = app.Configuration.GetValue<bool>("DeployDatabaseChanges");
@@ -50,6 +60,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// middleware
 app.UseAuthorization();
 
 app.MapControllers();
