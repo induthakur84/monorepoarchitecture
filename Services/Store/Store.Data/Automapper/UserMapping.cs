@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Store.Data.Automapper
 {
-    public class UserProfile:Profile
+    public class UserMapping:Profile
     {
-        public UserProfile()
+        public UserMapping()
         {
             CreateMap<User, UserResponse>();
             CreateMap<UserRequest, User>();

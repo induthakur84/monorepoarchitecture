@@ -12,14 +12,10 @@ namespace Store.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserData _userData;
-
-        // Constructor
         public UserController(IUserData userData)
         {
             _userData = userData;
         }
-
-
         [HttpPost]
         [ServiceFilter(typeof(ResponseFilterAttribute<UserResponse>))]
         public async Task<UserResponse> Create([FromBody] UserRequest request)
