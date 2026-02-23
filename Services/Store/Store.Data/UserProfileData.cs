@@ -75,12 +75,21 @@ namespace Store.Data
                     TotalNumberOfRecords = totalCount,
                     Results = data
                 };
-            
         }
 
-        public Task<UserProfileResponse> GetById(int id)
-        {
-            throw new NotImplementedException();
+
+        // what is eager loading and lazy loading ?
+        public async Task<UserProfileResponse> GetById(int id)
+        { 
+            var entity= _context.UserProfiles
+                   .AsNoTracking()
+                   .Include(x=>x.User)
+                     .FirstOrDefault(x=>x.Id==id);
+            if (entity == null)
+            {
+                return null;
+            }
+            return _mapper.Map<UserProfileResponse>(entity);
         }
 
         public Task<UserProfileResponse> GetByUserId(int userId)
