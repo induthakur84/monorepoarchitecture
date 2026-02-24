@@ -17,6 +17,7 @@ namespace Store.Data.Context
 
         //10000
         public DbSet<User> Users { get; set; }
-        public DbSet<UserProfile> UserProfiles { get; set; }    
+        public DbSet<UserProfile> UserProfiles { get; set; }   
+        public DbSet<Order> Orders { get; set; }
     }
 }

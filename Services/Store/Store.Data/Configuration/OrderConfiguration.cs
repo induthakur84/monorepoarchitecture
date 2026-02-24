@@ -9,11 +9,6 @@ namespace Store.Data.Configuration
         public void Configure(EntityTypeBuilder<Order> builder)
         {
            builder.Property(x=>x.CreatedAt).IsRequired();
-
-
-
-
-
             builder.HasOne(o => o.User)
                 .WithMany(u => u.Orders)
                 .HasForeignKey(o => o.UserId)

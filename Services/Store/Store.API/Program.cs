@@ -25,6 +25,7 @@ builder.Services.AddScoped(typeof(ResponseFilterAttribute<>));
 // Register IUserData and its implementation UserData
 
 //1000
+
 builder.Services.RegisterServices(typeof(UserData).Assembly.FullName);
 
 

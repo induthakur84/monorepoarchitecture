@@ -5,7 +5,9 @@ using Store.Domain.DTO.Response;
 
 namespace Store.Data.Interfaces
 {
-  
+
+    //builder.Services.AddScoped<IUserData, UserData>();
+
     [RegisterScoped]
  //IUserProfile
     public interface IUserData
