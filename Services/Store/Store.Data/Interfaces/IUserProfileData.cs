@@ -24,5 +24,7 @@ namespace Store.Data.Interfaces
             int pageSize = 10,
             string? search =null);
 
+        Task<bool> Delete(int id);  
+
     }
 }

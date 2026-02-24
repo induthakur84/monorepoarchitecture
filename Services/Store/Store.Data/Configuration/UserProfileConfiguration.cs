@@ -19,6 +19,7 @@ namespace Store.Data.Configuration
     }
 }
 
-//user
 
-//order
+//user  ---useri delerted
+
+//order---userid 1 dleate record where userid 1

@@ -5,6 +5,7 @@ using Store.Data.Context;
 using Store.Data.Interfaces;
 using Store.Domain.DTO.Request;
 using Store.Domain.DTO.Response;
+using Store.Domain.Entities;
 
 namespace Store.Data
 {
@@ -17,13 +18,34 @@ namespace Store.Data
             _context = context;
             _mapper = mapper;
         }
-        public Task<UserProfileResponse> Create(UserProfileRequest request)
+        public async Task<UserProfileResponse> Create(UserProfileRequest request)
         {
-            throw new NotImplementedException();
+            var entity = _mapper.Map<UserProfile>(request);
+            await _context.UserProfiles.AddAsync(entity);
+            await _context.SaveChangesAsync();
+
+            var result = await _context.UserProfiles
+                   .AsNoTracking()
+                   .Include(x => x.User)
+                     .FirstOrDefaultAsync(x => x.Id == entity.Id);
+
+            return _mapper.Map<UserProfileResponse>(result);
+        }
+
+        public async Task<bool> Delete(int id)
+        {
+            var entity = await _context.UserProfiles.FindAsync(id);
+            if (entity == null)
+            {
+                return false;
+            }
+            _context.UserProfiles.Remove(entity);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<PagedResults<UserProfileResponse>> GetAll(int pageNumber = 1,
-            int pageSize = 10, 
+            int pageSize = 10,
             string? search = null)
         {
 
@@ -52,39 +74,39 @@ namespace Store.Data
                  );
             }
 
-                var totalCount= await query.CountAsync();
+            var totalCount = await query.CountAsync();
 
-                //
+            //
 
-                //pageNumber= 2, pageSize=10 --> it will skip (10)
-                 //1-1=0
-                 //2-2=1
+            //pageNumber= 2, pageSize=10 --> it will skip (10)
+            //1-1=0
+            //2-2=1
 
-                //Skip : ignores records from previous pages
-                //Take: Limits number of record returned
-                var data= await query.
-                          Skip((pageNumber-1)*pageSize)
-                          .Take(pageSize)
-                          .Select(x=> _mapper.Map<UserProfileResponse>(x))
-                          .ToListAsync();
+            //Skip : ignores records from previous pages
+            //Take: Limits number of record returned
+            var data = await query.
+                      Skip((pageNumber - 1) * pageSize)
+                      .Take(pageSize)
+                      .Select(x => _mapper.Map<UserProfileResponse>(x))
+                      .ToListAsync();
 
-                return new PagedResults<UserProfileResponse>
-                {
-                    PageNumber = pageNumber,
-                    PageSize = pageSize,
-                    TotalNumberOfRecords = totalCount,
-                    Results = data
-                };
+            return new PagedResults<UserProfileResponse>
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalNumberOfRecords = totalCount,
+                Results = data
+            };
         }
 
 
         // what is eager loading and lazy loading ?
         public async Task<UserProfileResponse> GetById(int id)
-        { 
-            var entity= _context.UserProfiles
+        {
+            var entity = _context.UserProfiles
                    .AsNoTracking()
-                   .Include(x=>x.User)
-                     .FirstOrDefault(x=>x.Id==id);
+                   .Include(x => x.User)
+                     .FirstOrDefault(x => x.Id == id);
             if (entity == null)
             {
                 return null;
@@ -92,14 +114,33 @@ namespace Store.Data
             return _mapper.Map<UserProfileResponse>(entity);
         }
 
-        public Task<UserProfileResponse> GetByUserId(int userId)
+        public async Task<UserProfileResponse> GetByUserId(int userId)
         {
-            throw new NotImplementedException();
+            var entity = _context.UserProfiles
+                   .AsNoTracking()
+                   .Include(x => x.User)
+                     .FirstOrDefault(x => x.UserId == userId);
+            if (entity == null)
+            {
+                return null;
+            }
+            return _mapper.Map<UserProfileResponse>(entity);
         }
 
-        public Task<UserProfileResponse> Update(int id, UserProfileRequest request)
+        public async Task<UserProfileResponse> Update(int id, UserProfileRequest request)
         {
-            throw new NotImplementedException();
+            var entity = _context.UserProfiles
+                .Include(x => x.User)
+                .FirstOrDefault(x=>x.Id==id);
+            if (entity == null)
+            {
+                return null;
+            }
+            _mapper.Map(request, entity);   
+            await _context.SaveChangesAsync();
+            return _mapper.Map<UserProfileResponse>(entity);
         }
     }
 }
+
+// why we use include keyword in get by id and get by user id ?
