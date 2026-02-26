@@ -18,9 +18,6 @@ namespace Store.Data.Interfaces
 
         Task<OrderResponse> GetById(int id);
 
-
-
-        //Get all orders for a Specific user
         Task<PagedResults<OrderResponse>> GetAllByUserId(
           int userId,
           int pageNumber = 1,

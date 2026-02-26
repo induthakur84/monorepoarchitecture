@@ -171,7 +171,6 @@ namespace Store.Data
             {
                 return null;
             }
-
             _mapper.Map(request, order);
             await _context.SaveChangesAsync();
             return _mapper.Map<OrderResponse>(order);

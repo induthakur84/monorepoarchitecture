@@ -76,7 +76,7 @@ namespace Store.Data
             if (entity == null)
                 return null;
             _mapper.Map(request, entity);
-            _context.Users.Update(entity); await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return _mapper.Map<UserResponse>(entity);
         }
     }

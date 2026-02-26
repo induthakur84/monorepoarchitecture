@@ -34,3 +34,6 @@
         public IEnumerable<T> Results { get; set; }
     }
 }
+// many to many relationship
+//Product --- ProductCategory --- Category
+//Category --- ProductCategory --- Product
