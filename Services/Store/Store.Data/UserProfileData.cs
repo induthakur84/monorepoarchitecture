@@ -50,10 +50,19 @@ namespace Store.Data
         {
 
             // here we add user because we email and name from user seaching
+
+
+            //here we are using eager loading to load the related user data along with the user profile data in a single query,
+            //which can improve performance by reducing the number of database calls.
             var query = _context.UserProfiles
                     .Include(x => x.User)
+                      .AsSplitQuery()
                       .AsNoTracking()
                       .AsQueryable();
+
+
+
+            //AsSplitQuery() is used to optimize the performance of queries that involve multiple related entities.
 
             if (!string.IsNullOrWhiteSpace(search))
             {

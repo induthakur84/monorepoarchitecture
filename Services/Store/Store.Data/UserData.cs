@@ -60,6 +60,21 @@ namespace Store.Data
             };
         }
 
+        //in Asynochonus method,
+        //we can use the await keyword to wait for the completion of an asynchronous operation
+        //before proceeding with the next line of code.
+
+
+        //eg it i use thread1 to get data from the database
+        //, and it takes 5 seconds to get the data,
+
+        //if i use await keyword,
+        //the thread1 will be released to do other work
+        //while waiting for the data to be retrieved from the database,
+
+        //thread 1 goes back to the thread pool and can be used to handle other requests or perform other tasks,
+
+        // when i get the response from the database, so any available thread from the thread pool will pick up the continuation of the code after the await keyword and execute it,
         //"{}/ totalcount: 1000, results: []}"
 
         public async Task<UserResponse> GetByIdAsync(int id)
