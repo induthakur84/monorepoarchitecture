@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Store.SeedData.Model;
+using Store.SeedData.Services;
 
 Console.WriteLine("Store Seed Data");
 
@@ -37,3 +38,10 @@ if (string.IsNullOrWhiteSpace(appConfigSettings.Store_DbConnectionString))
 }
 
 
+var userService= new UserService(appConfigSettings);
+
+
+if(appConfigSettings.ProcessSqlData && appConfigSettings.ProcessUserToSqlData)
+{
+    await userService.ProcessUserSqlData();
+}
