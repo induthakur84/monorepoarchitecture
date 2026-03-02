@@ -83,10 +83,30 @@ namespace Store.SeedData.Services
 
                     await cmd.ExecuteNonQueryAsync();
                 }
+                await transaction.CommitAsync();   // ✅ THIS WAS MISSING
 
             }
             catch (Exception ex)
             {
+                // If any error occurs → rollback all changes
+                if (transaction != null)
+                {
+                    try { await transaction.RollbackAsync(); } catch { /* ignore rollback errors */ }
+                }
+
+                Console.WriteLine(ex.Message);
+
+                // Throw again so Program.cs knows seeding failed
+                throw;
+            }
+            finally
+            {
+                // Always close and dispose connection to avoid memory leaks
+                if (connection != null)
+                {
+                    try { await connection.CloseAsync(); } catch { }
+                    await connection.DisposeAsync();
+                }
             }
         }
     }

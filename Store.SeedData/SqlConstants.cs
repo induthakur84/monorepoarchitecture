@@ -32,7 +32,7 @@
               --if Email not Found--> Insert new Record
                
                WHEN NOT MATCHED THEN
-                    INSERT ([Name].[Email])
+                    INSERT ([Name],[Email])
                     VALUES(Source.[Name], Source.[Email]);
              ";
     }
