@@ -9,6 +9,8 @@ using Store.Domain.Entities;
 
 namespace Store.Data
 {
+
+    //Integration testing
     public class UserData : IUserData
     {
         public readonly StoreDbContext _context;

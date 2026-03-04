@@ -1,5 +1,8 @@
 using AutoMapper;
+using Azure.Core;
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using Store.Data;
 using Store.Data.Context;
 using Store.Domain.DTO.Request;
@@ -8,10 +11,6 @@ using Store.Domain.Entities;
 
 namespace Store.IntegrationTest
 {
-
-
-
-
     //IDisposable is user automatically test case
     public class UserDataTests : IDisposable
     {
@@ -45,14 +44,59 @@ namespace Store.IntegrationTest
            _context.Database.EnsureDeleted();
             _context.Dispose();
         }
+        
+        //   Fact  attribute indicate like this method for testing purpose
 
         [Fact]
-        public void Test1()
+        public async  Task  CreateAsync_WithValidRequest_CratesUserSuccessfully()
         {
+            //Arrange
+            var request = new UserRequest
+            {
+                //Set the fields based on our UserRequest properties
+                Name="Indu",
+                Email="Indu@store.com"
+            };
+            //Act
+            var result= await _sut.CreateAsync(request);
+            //Assert
+            result.Should().NotBeNull();
+            result.Name.Should().Be("Indu");
+            result.Email.Should().Be("Indu@store.com");
+        }
 
+
+        //Get by id
+
+        [Fact]
+        public async Task GetByIdAsync_WithValidId_ReturnsUser()
+        {
+            //Arrange
+            var user = new User
+            {
+                //Set the fields based on our UserRequest properties
+                Name = "test",
+                Email = "Test@store.com"
+            };
+
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+
+
+            ///Act
+            ///
+            var result= await _sut.GetByIdAsync(user.Id);
+
+
+
+
+            //Assert
+            result.Should().NotBeNull();
+            result.Id.Should().Be(user.Id);
         }
     }
 }
+
 //AAA
 
 //A --Arrage --create (name=ram, email='ram@tmail.com'
@@ -60,3 +104,8 @@ namespace Store.IntegrationTest
 //A--- Act  -- here we can hit the method(1, ram,ram@tmail.com)
 
 //A-- Asset-----
+
+
+
+
+
