@@ -7,6 +7,7 @@ namespace Store.Data.Automapper
 {
     public class OrderMapping : Profile
     {
+
         public OrderMapping()
         {
             // ✅ Request DTO -> Entity

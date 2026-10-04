@@ -5,7 +5,11 @@ using Store.Domain.DTO.Response;
 
 namespace Store.Data.Interfaces
 {
+
+    //builder.Services.AddScoped<IUserData, UserData>();
+
     [RegisterScoped]
+ //IUserProfile
     public interface IUserData
     {
         Task<UserResponse> CreateAsync(UserRequest request);
@@ -19,7 +23,11 @@ namespace Store.Data.Interfaces
         Task<bool> DeleteAsync(int id);
         Task<bool> DeleteAsyndfsdfadsc(int id);
     }
+
 }
+
+
+    //10interface
 
 ///PageRes
 //Page 1000{

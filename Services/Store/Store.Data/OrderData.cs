@@ -38,13 +38,16 @@ namespace Store.Data
             var result = await _dbContext.Orders
                 .Include(x => x.User)
                 .FirstOrDefaultAsync(x => x.Id == entity.Id);
-
+          
+            var result= await _context.Orders
+                .Include(x=>x.User)
+                .FirstOrDefaultAsync(x => x.Id == order.Id);
             return _mapper.Map<OrderResponse>(result);
         }
 
         // ✅ Get By Id
         public async Task<OrderResponse> GetByIdAsync(int id)
-        {
+            {
             var entity = await _dbContext.Orders
                 .AsNoTracking()
                 .Include(x => x.User)
@@ -58,8 +61,8 @@ namespace Store.Data
 
         // ✅ Get All Orders (Pagination + Search)
         public async Task<PagedResults<OrderResponse>> GetAllAsync(
-     int pageNumber = 1,
-     int pageSize = 10,
+            int pageNumber = 1,
+            int pageSize = 10, 
      string? search = null,
      string? sortBy = null,
      string? sortOrder = "desc")
@@ -74,7 +77,7 @@ namespace Store.Data
             {
                 search = search.ToLower();
 
-                query = query.Where(x =>
+                query = query.Where(x => 
                     x.User.Name.ToLower().Contains(search) ||
                     x.User.Email.ToLower().Contains(search));
             }
@@ -105,13 +108,15 @@ namespace Store.Data
         }
         // ✅ Get Orders By UserId (Pagination + Search)
         public async Task<PagedResults<OrderResponse>> GetByUserIdAsync(
-            int userId,
+            int userId, 
             int pageNumber = 1,
             int pageSize = 10,
             string? search = null)
         {
             var query = _dbContext.Orders
                 .Include(x => x.User)
+
+                // this is to improve the performance by not tracking the changes in the entities
                 .AsNoTracking()
                 .Where(x => x.UserId == userId)
                 .AsQueryable();
@@ -125,6 +130,7 @@ namespace Store.Data
             }
 
             var totalCount = await query.CountAsync();
+
 
             var data = await query
                 .OrderByDescending(x => x.Id)
@@ -166,7 +172,7 @@ namespace Store.Data
 
         // ✅ Delete
         public async Task<bool> DeleteAsync(int id)
-        {
+            {
             var entity = await _dbContext.Orders.FindAsync(id);
             if (entity == null)
                 return false;

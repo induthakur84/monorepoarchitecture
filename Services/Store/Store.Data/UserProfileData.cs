@@ -24,13 +24,15 @@ namespace Store.Data
         public async Task<UserProfileResponse> CreateAsync(UserProfileRequest request)
         {
             var entity = _mapper.Map<UserProfile>(request);
+            await _context.UserProfiles.AddAsync(entity);
+            await _context.SaveChangesAsync();
 
             await _dbContext.UserProfiles.AddAsync(entity);
             await _dbContext.SaveChangesAsync();
 
             var result = await _dbContext.UserProfiles
-                .Include(x => x.User)
-                .FirstOrDefaultAsync(x => x.Id == entity.Id);
+                   .Include(x => x.User)
+                     .FirstOrDefaultAsync(x => x.Id == entity.Id);
 
             return _mapper.Map<UserProfileResponse>(result);
         }
@@ -47,6 +49,10 @@ namespace Store.Data
                 return null;
 
             return _mapper.Map<UserProfileResponse>(entity);
+            }
+            _context.UserProfiles.Remove(entity);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         // ✅ Get By UserId (1-to-1)
@@ -77,9 +83,10 @@ namespace Store.Data
             // - AutoMapper mapping also uses navigation property values
             // AsNoTracking() improves performance for read-only queries
             var query = _dbContext.UserProfiles
-                .Include(x => x.User)
-                .AsNoTracking()
-                .AsQueryable();
+                    .Include(x => x.User)
+                      .AsSplitQuery()
+                      .AsNoTracking()
+                      .AsQueryable();
 
             // ⭐ Step 2: Apply Search Filter (Optional)
             // This runs only when user provides a search string.
@@ -95,8 +102,8 @@ namespace Store.Data
                 // - Related User Email
                 query = query.Where(x =>
                     x.Address.ToLower().Contains(search) ||
-                    x.PhoneNumber.ToLower().Contains(search) ||
-                    x.User.Name.ToLower().Contains(search) ||
+                     x.PhoneNumber.ToLower().Contains(search) ||
+                      x.User.Name.ToLower().Contains(search) ||
                     x.User.Email.ToLower().Contains(search));
             }
 
@@ -112,12 +119,12 @@ namespace Store.Data
             // pageNumber = 2, pageSize = 10 → Skip(10)
             var data = await query
                 .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
+                      .Take(pageSize)
 
                 // ⭐ Step 5: Map Entity → Response DTO
                 // Converts database model into API response model.
-                .Select(x => _mapper.Map<UserProfileResponse>(x))
-                .ToListAsync();
+                      .Select(x => _mapper.Map<UserProfileResponse>(x))
+                      .ToListAsync();
 
             // ⭐ Step 6: Return Paged Result Structure
             // This matches your PagedResults<T> format:
@@ -139,10 +146,11 @@ namespace Store.Data
         public async Task<UserProfileResponse> UpdateAsync(int id, UserProfileRequest request)
         {
             var entity = await _dbContext.UserProfiles
-                .Include(x => x.User)
+                   .Include(x => x.User)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (entity == null)
+            {
                 return null;
 
             _mapper.Map(request, entity);
@@ -166,3 +174,5 @@ namespace Store.Data
         }
     }
 }
+
+// why we use include keyword in get by id and get by user id ?

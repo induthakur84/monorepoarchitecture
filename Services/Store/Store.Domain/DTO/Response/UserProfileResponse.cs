@@ -5,6 +5,8 @@
         public int Id { get; set; }
 
         public int UserId { get; set; }
+        public string UserAddress { get; set; } = string.Empty;
+        public string UserPhoneNumber { get; set; } = string.Empty;
 
         public string Address { get; set; } = string.Empty;
 
@@ -16,3 +18,6 @@
         public string? Email { get; set; }
     }
 }
+
+// how to any field nullable
+//=null

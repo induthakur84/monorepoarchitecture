@@ -9,6 +9,8 @@ using Store.Domain.Entities;
 
 namespace Store.Data.Services
 {
+
+    //Integration testing
     public class UserData : IUserData
     {
 
@@ -60,9 +62,9 @@ namespace Store.Data.Services
         public async Task<PagedResults<UserResponse>> GetAllAsync()
         {
             var users = await _dbContext.Users
-                .AsNoTracking()
-                .OrderByDescending(x => x.Id)
-                .ToListAsync();
+                            .AsNoTracking()
+                            .OrderByDescending(x => x.Id)
+                            .ToListAsync();
 
             var totalCount = users.Count();
 
@@ -100,6 +102,11 @@ namespace Store.Data.Services
 
             await _dbContext.SaveChangesAsync();
 
+        public async Task<UserResponse> GetByIdAsync(int id)
+        {
+            var entity = await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+            if (entity == null)
+                return null;
             return _mapper.Map<UserResponse>(entity);
         }
 

@@ -16,6 +16,15 @@ namespace Store.API.Controllers
         // interface because  we can hide the
         // implementation call only the method names
         private readonly IUserData _userData;
+        // 1 same object created for userprofile and usercontroller and reused in both controllers
+        //if i want used here addscoped then it will reuse the object that we created in userprofile
+
+
+
+        //2 new object
+        // if i want  used here addtransient then it will create new object for userprofile and usercontroller
+       // private readonly IUserProfileData _userProfileData;
+
 
         public UserController(IUserData userData)
         {

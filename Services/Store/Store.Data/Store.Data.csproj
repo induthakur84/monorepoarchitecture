@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\ApiUtility\ApiUtility.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\SharedModel\SharedModel.csproj" />
     <ProjectReference Include="..\Store.Domain\Store.Domain.csproj" />
   </ItemGroup>
 

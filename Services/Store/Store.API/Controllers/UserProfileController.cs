@@ -1,6 +1,8 @@
 ﻿using ApiUtility.ActionFilters;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SharedModel;
+using Store.Data;
 using Store.Data.Interfaces;
 using Store.Domain.DTO.Request;
 using Store.Domain.DTO.Response;
@@ -11,6 +13,7 @@ namespace Store.API.Controllers
     [ApiController]
     public class UserProfileController : ControllerBase
     {
+
         private readonly IUserProfileData _userProfileData;
 
         public UserProfileController(IUserProfileData userProfileData)
@@ -69,4 +72,5 @@ namespace Store.API.Controllers
             return await _userProfileData.DeleteAsync(id);
         }
     }
+
 }

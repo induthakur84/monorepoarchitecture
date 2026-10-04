@@ -16,10 +16,11 @@ namespace Store.Data.Automapper
             CreateMap<UserProfile, UserProfileResponse>()
                 // Map navigation property values from User table
                 .ForMember(dest => dest.UserName,
-                           opt => opt.MapFrom(src => src.User.Name))
+                                  opt => opt.MapFrom(src => src.User.Name))
 
                 .ForMember(dest => dest.Email,
                            opt => opt.MapFrom(src => src.User.Email));
         }
     }
 }
+//paid//manual mapping

@@ -2,6 +2,11 @@
 using SharedModel;
 using Store.Domain.DTO.Request;
 using Store.Domain.DTO.Response;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Store.Data.Interfaces
 {
@@ -19,9 +24,9 @@ namespace Store.Data.Interfaces
 
         // Get all orders for a specific user
         Task<PagedResults<OrderResponse>> GetByUserIdAsync(
-            int userId,
-            int pageNumber = 1,
-            int pageSize = 10,
+          int userId,
+          int pageNumber = 1,
+          int pageSize = 10,
             string? search = null);
 
         // Get all orders with Pagination + Search

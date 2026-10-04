@@ -6,6 +6,8 @@
     //PAgesize: 10,
     //TotalNumberOfRecords: 1000,
     //Results: [
+
+
     //]
     //}
     public class PagedResults<T>
@@ -32,3 +34,6 @@
         public IEnumerable<T> Results { get; set; }
     }
 }
+// many to many relationship
+//Product --- ProductCategory --- Category
+//Category --- ProductCategory --- Product

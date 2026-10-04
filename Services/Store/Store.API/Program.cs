@@ -28,8 +28,17 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();// AutoMapper (Recommended approach)
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+
 var app = builder.Build();
 
+
+//Global Exception Handling Middleware
+
+//singleton dependency injection is used for middleware
+//because we want to have only one instance of the middleware
+//throughout the application lifecycle.
+//This allows us to maintain state and share resources across all requests that pass through the
+app.UseMiddleware<ExceptionMiddleware>();
 
 //Global Exception Handling Middleware
 app.UseMiddleware<ExceptionMiddleware>();
@@ -49,6 +58,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// middleware
 app.UseAuthorization();
 
 app.MapControllers();

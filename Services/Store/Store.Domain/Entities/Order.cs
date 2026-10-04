@@ -8,6 +8,7 @@ namespace Store.Domain.Entities
 {
     public class Order
     {
+        //pk
         public int Id { get; set; }
 
         // ✅ FK

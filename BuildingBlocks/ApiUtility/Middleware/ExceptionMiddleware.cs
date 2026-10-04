@@ -77,6 +77,9 @@ namespace ApiUtility.Middleware
         ///
         /// Different exception types represent different problems.
         /// </summary>
+        /// <param name="context"></param>
+        /// <param name="exception"></param>
+        /// <returns></returns>
         private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             //-------------------------------------------------------
