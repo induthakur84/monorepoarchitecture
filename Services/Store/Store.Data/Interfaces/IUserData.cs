@@ -1,4 +1,5 @@
 ﻿using ApiUtility.ActionFilters;
+using SharedModel;
 using Store.Domain.DTO.Request;
 using Store.Domain.DTO.Response;
 
@@ -9,13 +10,14 @@ namespace Store.Data.Interfaces
     {
         Task<UserResponse> CreateAsync(UserRequest request);
 
-            Task<UserResponse> GetByIdAsync(int id);
+         Task<UserResponse> GetByIdAsync(int id);
     
-            Task<IEnumerable<UserResponse>> GetAllAsync();
+        Task<PagedResults<UserResponse>> GetAllAsync();
     
-            Task<UserResponse> UpdateAsync(int id, UserRequest request);
+        Task<UserResponse> UpdateAsync(int id, UserRequest request);
     
-            Task<bool> DeleteAsync(int id);
+        Task<bool> DeleteAsync(int id);
+        Task<bool> DeleteAsyndfsdfadsc(int id);
     }
 }
 

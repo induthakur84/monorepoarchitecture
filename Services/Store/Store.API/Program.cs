@@ -1,20 +1,44 @@
+﻿using ApiUtility.ActionFilters;
+using ApiUtility.Middleware;
+using Extensions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Store.Data.Context;
+using Store.Data.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<StoreDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+
+builder.Services.AddScoped(typeof(ResponseFilterAttribute<>));
+
+
+
+builder.Services.RegisterServices(typeof(UserData).Assembly.FullName);
+
 
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen();// AutoMapper (Recommended approach)
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
+
+//Global Exception Handling Middleware
+app.UseMiddleware<ExceptionMiddleware>();
 
 var deployDatabaseChanges = app.Configuration.GetValue<bool>("DeployDatabaseChanges");
 
 if (deployDatabaseChanges)
 {
-  //  UpdateDatabase(app);
+    UpdateDatabase(app);
 }
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -32,16 +56,15 @@ app.MapControllers();
 app.Run();
 
 
-//void UpdateDatabase(IApplicationBuilder app)
-//{
-//    Task.Run(() =>
-//    {
-//        using var serviceScope = app.ApplicationServices
-//        .GetRequiredService<IServiceScopeFactory>()
-//        .CreateScope();
-//        using var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
-//        context.Database.SetCommandTimeout(1800);
-//        context.Database.Migrate();
-//        //context.AddTemporalTableSupport("dbo", "History");
-//    });
-//}
+void UpdateDatabase(IApplicationBuilder app)
+{
+    Task.Run(() =>
+    {
+        using var serviceScope = app.ApplicationServices
+        .GetRequiredService<IServiceScopeFactory>()
+        .CreateScope();
+        using var context = serviceScope.ServiceProvider.GetService<StoreDbContext>();
+        context.Database.SetCommandTimeout(1800);
+        context.Database.Migrate();
+    });
+}

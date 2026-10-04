@@ -1,11 +1,6 @@
 ﻿using ApiUtility.ActionFilters;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Extensions
 {
@@ -16,7 +11,8 @@ namespace Extensions
             var types = Assembly.Load(assemblyName)
                 .GetTypes();
 
-            var interfaces = types.Where(t => t.GetCustomAttribute<RegisterDependencyAttribute>() != null && t.IsInterface);
+            var interfaces = types.Where(t => t.GetCustomAttribute<RegisterDependencyAttribute>() !=
+            null && t.IsInterface);
 
             foreach (var @interface in interfaces)
             {
@@ -32,9 +28,11 @@ namespace Extensions
 
         public static Type GetImplementedClass(Type[] types, Type @interface)
         {
-            var @class = types.FirstOrDefault(t => t.GetTypeInfo().ImplementedInterfaces.Any(i => i == @interface));
+            var @class = types.FirstOrDefault(t => t.GetTypeInfo().ImplementedInterfaces.
+            Any(i => i == @interface));
 
-            return @class ?? throw new NotImplementedException($"No class implements Interface: {@interface.Name}");
+            return @class ?? throw new NotImplementedException($"No class implements Interface: " +
+                $"{@interface.Name}");
         }
     }
 }

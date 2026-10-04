@@ -9,13 +9,13 @@ namespace Store.Data.Context
         public StoreDbContext(DbContextOptions<StoreDbContext> options) : base(options)
         {
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
-
         //10000
         public DbSet<User> Users { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<Order> Orders { get; set; }
     }
 }
